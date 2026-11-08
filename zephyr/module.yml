@@ -1,0 +1,4 @@
+name: mamekeyS2
+build:
+  settings:
+    board_root: config

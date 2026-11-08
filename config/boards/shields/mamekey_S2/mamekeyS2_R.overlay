@@ -1,0 +1,192 @@
+#include "mamekeyS2.dtsi"
+#include <input/processors.dtsi>
+#include <zephyr/dt-bindings/input/input-event-codes.h>
+
+&default_transform {
+    col-offset = <6>;
+};
+
+
+&kscan0 {
+        gpios
+          = <&xiao_d 2 GPIO_ACTIVE_HIGH>
+          , <&xiao_d 3 GPIO_ACTIVE_HIGH>
+          , <&xiao_d 6 GPIO_ACTIVE_HIGH>
+          , <&xiao_d 8 GPIO_ACTIVE_HIGH>
+          , <&xiao_d 9 GPIO_ACTIVE_HIGH>
+          , <&xiao_d 10 GPIO_ACTIVE_HIGH>
+          ; 
+          };
+          
+&right_encoder {
+    status = "okay";
+};          
+
+&pinctrl {
+    spi0_default: spi0_default {    //通常時(SPI通信中)のピン構成
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK, 0, 5)>, //P0.05を指定(SCLK)
+                <NRF_PSEL(SPIM_MOSI, 0, 4)>,    //P0.04を指定(SDIOだからMOSI,MISO両方の役割を担う)
+                <NRF_PSEL(SPIM_MISO, 0, 4)>;
+        };
+    };
+
+    spi0_sleep: spi0_sleep {    //スリープ時のピン構成(省電力)
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK, 0, 5)>,
+                <NRF_PSEL(SPIM_MOSI, 0, 4)>,
+                <NRF_PSEL(SPIM_MISO, 0, 4)>;
+             //bias-pull-up; // Hi-Z回避　フリーズ回避
+                low-power-enable;  // フリーズの原因？
+        };
+    };
+};
+
+
+&spi0 {
+    status = "okay";
+    compatible = "nordic,nrf-spim"; //マイコンがnRFシリーズ
+    pinctrl-0 = <&spi0_default>;
+    pinctrl-1 = <&spi0_sleep>;
+    pinctrl-names = "default", "sleep";
+    cs-gpios = <&xiao_d 7 GPIO_ACTIVE_LOW>;  //P1.12を指定(CS)
+
+    trackball_central: trackball_central@0 {
+        status = "okay";
+        compatible = "pixart,pmw3610-alt";  //トラボセンサ用のドライバとバインド
+        reg = <0>;
+        spi-max-frequency = <2000000>; //1MHz - 2MHz
+        irq-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>; //P0.02を指定(MOTION)
+        cpi = <550>;
+        evt-type = <INPUT_EV_REL>;
+        x-input-code = <INPUT_REL_X>;
+        y-input-code = <INPUT_REL_Y>;
+    };
+};
+
+// Overrides for the input listener node
+&trackball_central_listener {
+    status = "okay";
+    device = <&trackball_central>;
+    
+    win_mouse {
+       layers = <12>;
+        //input-processors =
+            //<&zip_xy_transform INPUT_TRANSFORM_Y_INVERT>;
+            //<&zip_xy_transform INPUT_TRANSFORM_XY_SWAP>;
+    }; 
+    
+    mac_mouse {
+       layers = <9>;
+        input-processors =
+            //<&zip_xy_transform INPUT_TRANSFORM_Y_INVERT>;
+            //<&zip_xy_transform INPUT_TRANSFORM_XY_SWAP>;
+            <&zip_xy_scaler 2 3>;
+    }; 
+    
+
+    scroller {
+        layers = <15>;
+        input-processors = 
+            //<&zip_xy_transform INPUT_TRANSFORM_XY_SWAP>,        //X軸とY軸の入れ替え
+            //<&zip_xy_transform INPUT_TRANSFORM_Y_INVERT>,       //Y軸反転
+            <&zip_xy_scaler 1 10>,                              //移動量をa/b スクロール量を減らすため
+            <&zip_xy_to_scroll_mapper>,                         //スクロールモードに変更　スクロールの条件の先頭に書く
+            <&zip_scroll_transform INPUT_TRANSFORM_Y_INVERT>,   //スクロールのY軸反転
+            <&zip_scroll_transform INPUT_TRANSFORM_X_INVERT>,   //スクロールのX軸反転
+            <&zip_scroll_scaler 1 5>;                      //スクロール量をa/b倍
+           };
+           
+    fast_scroller {
+        layers = <16>;
+        input-processors = 
+            //<&zip_xy_transform INPUT_TRANSFORM_XY_SWAP>,
+            //<&zip_xy_transform INPUT_TRANSFORM_Y_INVERT>,
+            <&zip_xy_to_scroll_mapper>,                         //スクロールモードに変更
+            <&zip_scroll_transform INPUT_TRANSFORM_Y_INVERT>,   //スクロールのY軸反転
+            <&zip_scroll_transform INPUT_TRANSFORM_X_INVERT>,   //スクロールのX軸反転 
+            <&zip_scroll_scaler 1 8>;                      //スクロール量をa/b倍
+           };
+      
+    win_faster {
+        layers = <14>;
+        input-processors =
+            //<&zip_xy_transform INPUT_TRANSFORM_Y_INVERT>,
+            //<&zip_xy_transform INPUT_TRANSFORM_XY_SWAP>,
+            <&zip_xy_scaler 2 1>;
+    };       
+    
+    win_slower {
+        layers = <13>;
+        input-processors =
+            //<&zip_xy_transform INPUT_TRANSFORM_Y_INVERT>,
+            //<&zip_xy_transform INPUT_TRANSFORM_XY_SWAP>,
+            <&zip_xy_scaler 1 2>;
+    };
+    
+    mac_faster {
+        layers = <11>;
+        input-processors =
+            //<&zip_xy_transform INPUT_TRANSFORM_Y_INVERT>,
+            //<&zip_xy_transform INPUT_TRANSFORM_XY_SWAP>,
+            <&zip_xy_scaler 2 1>;
+    };
+    
+    
+    mac_slower {
+        layers = <10>;
+        input-processors =
+            //<&zip_xy_transform INPUT_TRANSFORM_Y_INVERT>,
+            //<&zip_xy_transform INPUT_TRANSFORM_XY_SWAP>,
+            <&zip_xy_scaler 1 2>;
+    };
+    
+    win_aml {
+        layers = <4>;
+        input-processors = 
+            <&zip_temp_layer 12 850>;   //オートマウスレイヤーwin
+    };
+    
+    mac_aml {
+        layers = <0>;
+        input-processors =
+        <&zip_temp_layer 9 850>;         //オートマウスレイヤーmac
+    };
+
+};
+
+//right hand trackball AML not release key
+    &zip_temp_layer {
+    excluded-positions = <
+        2 // e
+        3 // r
+        7 // i
+        10 // a
+        11 // s
+        12 // d
+        13 // f
+        20 // J
+        21 // K
+        22 // L
+        23 // ;
+        24 // z(shift)
+        26 // c
+        27 // v
+        31 // n
+        32 // m
+        35 // /
+        36 // ctrl
+        37 // win(command)
+      //40 // space
+      //41 // Del
+        
+                >;
+    };
+    
+//Prevent accidental AML activation
+    &zip_temp_layer {
+        require-prior-idle-ms = <350>;
+    };
+
+
+

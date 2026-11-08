@@ -1,0 +1,32 @@
+manifest:
+  remotes:
+    - name: zmkfirmware
+      url-base: https://github.com/zmkfirmware
+    - name: mameeeeekko
+      url-base: https://github.com/mameeeeekko
+    - name: caksoylar
+      url-base: https://github.com/caksoylar
+    - name: prospector
+      url-base: https://github.com/t-ogura
+    - name: badjeff
+      url-base: https://github.com/badjeff
+
+  projects:
+    - name: zmk
+      remote: zmkfirmware
+      revision: main
+      import: app/west.yml
+    - name: zmk-rgbled-widget
+      remote: caksoylar
+      revision: main
+    - name: prospector-zmk-module
+      remote: prospector
+      revision: v2.2.0
+      #revision: feature/zephyr-4.1-lvgl9-container-fix
+      path: modules/prospector-zmk-module
+    - name: zmk-pmw3610-driver
+      remote: badjeff
+      revision: main  
+
+  self:
+    path: config
