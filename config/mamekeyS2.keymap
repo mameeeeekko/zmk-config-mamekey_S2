@@ -623,7 +623,7 @@
 &kp Q               &kp W             &kp E             &kp R            &kp T                                                    &kp Y           &kp U          &kp I        &kp O      &kp P
 &kp A               &kp S       &mt LEFT_WIN D          &mt RCTRL F      &kp G     &kp C_MUTE   &kp LA(C)   &to JIS  &trans    &kp H           &kp J          &kp K        &kp L      &kp SEMICOLON
 &mt_exit_AML_on_tap LEFT_SHIFT Z  &kp X      &kp C      &kp V            &kp B     &tog NUM                          &kp LS(CAPSLOCK)   &kp N      &kp M       &kp COMMA    &kp DOT    &mt RIGHT_SHIFT SLASH
-&kp LCTRL           &kp LEFT_WIN      &kp LEFT_ALT      &trans           &lt NUM SPACE   &lt SYM DEL　　   &kp BACKSPACE   &kp ENTER                       &mo BT           &mac_ime
+&kp LCTRL           &kp LEFT_WIN      &kp LEFT_ALT      &trans           &lt NUM SPACE   &lt SYM DEL             &kp BACKSPACE   &mt LEFT_SHIFT ENTER                       &mo BT           &mac_ime
 
         &kp UP_ARROW        
 &kp LEFT_ARROW  &kp RIGHT_ARROW 
