@@ -193,13 +193,13 @@
         eq {
             bindings = <&kp EQUAL>;
             layers = <0>; 
-            key-positions = <22 23>;
+            key-positions = <34 35>;
         };
         
         eq_JIS {
             bindings = <&kp JP_EQUAL>;
             layers = <JIS>; 
-            key-positions = <22 23>;
+            key-positions = <34 35>;
         };
 
         mac_layer_L_PARENTHESIS {
@@ -250,6 +250,12 @@
             key-positions = <21 22>;
         };
         
+        enter {
+            bindings = <&kp ENTER>;
+            layers = <0>; 
+            key-positions = <22 23>;
+        };
+        
         mac_layer_L_BRACE {
             bindings = <&kp LEFT_BRACE>;
             layers = <0>;
@@ -294,12 +300,12 @@
         atmark {
             bindings = <&kp AT_SIGN>; 
             layers = <0>;  
-            key-positions = <34 35>;
+            key-positions = <10 11>;
         };
         atmark_JIS {
             bindings = <&kp JP_AT>; 
             layers = <JIS>;  
-            key-positions = <34 35>;
+            key-positions = <10 11>;
         };
     };
 
