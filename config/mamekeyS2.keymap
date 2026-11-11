@@ -252,7 +252,6 @@
         
         enter {
             bindings = <&kp ENTER>;
-            layers = <0>; 
             key-positions = <22 23>;
         };
         
@@ -629,7 +628,7 @@
 &kp Q               &kp W             &kp E             &kp R            &kp T                                                    &kp Y           &kp U          &kp I        &kp O      &kp P
 &kp A               &kp S       &mt LEFT_WIN D          &mt RCTRL F      &kp G     &kp C_MUTE   &kp LA(C)   &to JIS  &trans    &kp H           &kp J          &kp K        &kp L      &kp SEMICOLON
 &mt_exit_AML_on_tap LEFT_SHIFT Z  &kp X      &kp C      &kp V            &kp B     &tog NUM                          &kp LS(CAPSLOCK)   &kp N      &kp M       &kp COMMA    &kp DOT    &mt RIGHT_SHIFT SLASH
-&kp LCTRL           &kp LEFT_WIN      &kp LEFT_ALT      &trans           &lt NUM SPACE   &lt SYM DEL             &kp BACKSPACE   &mt LEFT_SHIFT ENTER                       &mo BT           &mac_ime
+&kp LCTRL           &kp LEFT_WIN      &kp LEFT_ALT      &trans           &lt NUM SPACE   &lt SYM DEL             &kp BACKSPACE   &lt SYM ENTER                       &mo BT           &mac_ime
 
         &kp UP_ARROW        
 &kp LEFT_ARROW  &kp RIGHT_ARROW 
@@ -692,7 +691,7 @@
 &kp Q             &kp W             &kp E            &kp R           &kp T                                                    &kp Y          &kp U           &kp I        &kp O      &kp P
 &kp A             &kp S        &mt RIGHT_ALT D       &mt RCTRL F     &kp G       &kp C_MUTE  &kp LG(V)  &to O   &trans       &kp H          &kp J           &kp K        &kp L      &moSEMI
 &mt_exit_AML_on_tap LEFT_SHIFT Z  &kp X   &kp C      &kp V           &kp B       &tog JNUM                      &trans   &kp N          &kp M           &kp COMMA    &kp DOT    &mt RIGHT_SHIFT SLASH
-&kp LCTRL         &kp LEFT_WIN      &kp LEFT_ALT     &mt LCTRL DEL   &lt JNUM SPACE  &lt JSYM DEL         &kp BACKSPACE     &mt LEFT_SHIFT ENTER                      &mo BT     &lt WARR LA(GRAVE)
+&kp LCTRL         &kp LEFT_WIN      &kp LEFT_ALT     &mt LCTRL DEL   &lt JNUM SPACE  &lt JSYM DEL         &kp BACKSPACE     &lt JSYM ENTER                      &mo BT     &lt WARR LA(GRAVE)
 
         &kp UP_ARROW        
 &kp LEFT_ARROW  &kp RIGHT_ARROW
