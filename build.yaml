@@ -27,5 +27,3 @@ include:
   - board: xiao_ble//zmk
     shield: mamekeyS2_L rgbled_adapter
     cmake-args: -DCONFIG_ZMK_STUDIO=y
-  - board: xiao_ble//zmk
-    shield: tester_xiao
